@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 品牌主色（青绿） -->
+    <color name="colorPrimary">#016B61</color>
+    <color name="colorPrimaryDark">#024F48</color>
+    <color name="colorPrimaryLight">#70B2B2</color>
+    <color name="colorPrimaryAlpha5">#9ECFD4</color>
+    <color name="colorAccent">#016B61</color>
+
+    <color name="avatarBg">#E1F0EC</color>
+
+    <color name="gray100">#F5F6F4</color>
+    <color name="gray400">#BDBDBD</color>
+    <color name="textPrimary">#1C2421</color>
+    <color name="textSecondary">#6B736F</color>
+
+    <!-- 修正：原项目 white/black 颜色值被写反了 -->
+    <color name="black">#1C2421</color>
+    <color name="white">#FFFFFF</color>
+
+    <!-- 成绩着色 -->
+    <color name="scoreGood">#1C6B46</color>
+    <color name="scoreGoodBg">#E6F4EC</color>
+    <color name="scoreMid">#8A5A13</color>
+    <color name="scoreMidBg">#FBF0DC</color>
+    <color name="scoreBad">#A3302F</color>
+    <color name="scoreBadBg">#FBE7E7</color>
+</resources>

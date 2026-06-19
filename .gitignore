@@ -1,0 +1,19 @@
+# ===== 构建产物 =====
+**/build/
+**/.gradle/
+
+# ===== Android 前端 =====
+StudentManager/.idea/
+StudentManager/.kotlin/
+StudentManager/local.properties
+StudentManager/app/release/
+
+# ===== Spring Boot 后端 =====
+crudSpringBoot/*.log
+crudSpringBoot/logs/
+
+# ===== 系统文件 =====
+.DS_Store
+Thumbs.db
+desktop.ini
+

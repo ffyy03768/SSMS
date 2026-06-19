@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>学生成绩数据库</title>
+  <style>
+    :root{
+      --teal:#016B61; --teal-d:#024F48; --ink:#1c2421; --muted:#6b736f;
+      --line:#e7e9e5; --bg:#f5f6f4; --card:#ffffff;
+      --good-bg:#e6f4ec; --good:#1c6b46;
+      --mid-bg:#fbf0dc; --mid:#8a5a13;
+      --bad-bg:#fbe7e7; --bad:#a3302f;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+         background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;}
+    .mono{font-family:ui-monospace,Menlo,Consolas,"Courier New",monospace;}
+    .wrap{max-width:920px;margin:0 auto;padding:0 20px;}
+    header.topbar{background:var(--teal);color:#fff;padding:22px 0;}
+    .topbar .wrap{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+    .topbar h1{font-size:21px;font-weight:600;letter-spacing:.5px;}
+    .topbar .sub{font-size:13px;opacity:.85;}
+    main{padding:26px 0 60px;}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px;}
+    .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;}
+    .stat .k{font-size:12px;color:var(--muted);}
+    .stat .v{font-size:26px;font-weight:600;margin-top:2px;}
+    .stat .v .u{font-size:13px;font-weight:400;color:var(--muted);margin-left:3px;}
+    .scard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:12px;}
+    .shead{display:flex;align-items:center;gap:13px;}
+    .avatar{width:42px;height:42px;border-radius:50%;background:#e1f0ec;color:var(--teal-d);
+            display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;flex-shrink:0;}
+    .sname{font-size:16px;font-weight:600;}
+    .smeta{font-size:12px;color:var(--muted);margin-top:1px;}
+    .sright{margin-left:auto;text-align:right;}
+    .savg{font-size:20px;font-weight:600;color:var(--teal);}
+    .sright .lbl{font-size:11px;color:var(--muted);}
+    .grades{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line);}
+    .chip{display:flex;align-items:center;gap:8px;border-radius:9px;padding:6px 11px;font-size:13px;
+          background:var(--bg);border:1px solid var(--line);}
+    .chip .cr{font-size:11px;color:var(--muted);}
+    .chip .sc{font-weight:600;border-radius:6px;padding:1px 8px;}
+    .chip .sc.good{background:var(--good-bg);color:var(--good);}
+    .chip .sc.mid{background:var(--mid-bg);color:var(--mid);}
+    .chip .sc.bad{background:var(--bad-bg);color:var(--bad);}
+    .courseavg-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);}
+    .courseavg-row:last-child{border-bottom:none;}
+    .courseavg-row .nm{flex:1;font-size:14px;}
+    .courseavg-row .ct{font-size:12px;color:var(--muted);}
+    .courseavg-row .sc{font-weight:600;border-radius:6px;padding:2px 9px;font-size:13px;}
+    .empty{background:var(--card);border:1px dashed var(--line);border-radius:14px;padding:40px;
+           text-align:center;color:var(--muted);}
+    footer{color:var(--muted);font-size:12px;text-align:center;padding:10px 0 40px;}
+    @media(max-width:680px){.stats{grid-template-columns:repeat(2,1fr);}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <h1>学生成绩数据库</h1>
+      <span class="sub">StudentManager · H2 持久化数据库 · 一对多关系模型</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="stats">
+      <div class="stat"><div class="k">学生</div>
+        <div class="v"><span th:text="${studentCount}">0</span><span class="u">人</span></div></div>
+      <div class="stat"><div class="k">课程</div>
+        <div class="v"><span th:text="${courseCount}">0</span><span class="u">门</span></div></div>
+      <div class="stat"><div class="k">成绩记录</div>
+        <div class="v"><span th:text="${gradeCount}">0</span><span class="u">条</span></div></div>
+      <div class="stat"><div class="k">总平均分</div>
+        <div class="v mono" th:text="${overallAvg}">0.0</div></div>
+    </section>
+
+    <section class="scard" th:if="${!courseAverages.isEmpty()}" style="margin-bottom:18px;">
+      <div style="font-weight:600;font-size:15px;margin-bottom:6px;">课程平均分</div>
+      <div class="courseavg-row" th:each="c : ${courseAverages}">
+        <span class="nm" th:text="${c.name}">课程</span>
+        <span class="ct" th:text="|${c.count} 人|">0 人</span>
+        <span class="sc mono" th:classappend="${c.band}" th:text="${c.avg}">0.0</span>
+      </div>
+    </section>
+
+    <div th:if="${students.isEmpty()}" class="empty">
+      数据库暂无学生数据。启动后端后会自动写入示例数据，刷新本页即可看到。
+    </div>
+
+    <section>
+      <article class="scard" th:each="s : ${students}">
+        <div class="shead">
+          <div class="avatar" th:text="${#strings.substring(s.name,0,1)}">林</div>
+          <div>
+            <div class="sname" th:text="${s.name}">林若曦</div>
+            <div class="smeta">
+              <span class="mono" th:text="${s.studentNo}">2023012045</span>
+              · <span th:text="${s.major}">计算机科学与技术</span>
+              · <span th:text="${s.className}">计算机2301</span>
+            </div>
+          </div>
+          <div class="sright">
+            <div class="savg mono" th:text="${s.gpa}">0.0</div>
+            <div class="lbl">绩点 · <span th:text="${s.courseCount}">0</span> 门</div>
+          </div>
+        </div>
+        <div class="grades">
+          <div class="chip" th:each="g : ${s.grades}">
+            <span th:text="${g.courseName}">课程</span>
+            <span class="cr" th:text="|${g.credit} 学分|">0 学分</span>
+            <span class="sc mono"
+                  th:classappend="${g.score >= 85 ? 'good' : (g.score >= 60 ? 'mid' : 'bad')}"
+                  th:text="${g.score}">0</span>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer>数据来源：H2 文件数据库 · 表 student / course / grade</footer>
+</body>
+</html>

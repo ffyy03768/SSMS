@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">学生管理</string>
+    <string name="add_student">添加学生</string>
+    <string name="add_grade">添加成绩</string>
+    <string name="student_detail">学生详情</string>
+    <string name="transcript">成绩单</string>
+    <string name="average">平均分</string>
+    <string name="gpa">绩点</string>
+    <string name="course_count">课程数</string>
+    <string name="save">保存</string>
+    <string name="search_hint">搜索姓名或学号</string>
+    <string name="empty_students">还没有学生，点击右下角按钮添加</string>
+    <string name="no_grades">暂无成绩，点击下方按钮添加</string>
+    <string name="student_no">学号</string>
+    <string name="name">姓名</string>
+    <string name="gender">性别</string>
+    <string name="major">专业</string>
+    <string name="class_name">班级</string>
+    <string name="enroll_year">入学年份</string>
+    <string name="email">邮箱</string>
+    <string name="score">成绩</string>
+    <string name="term">学期</string>
+    <string name="course">课程</string>
+    <string name="edit">编辑</string>
+    <string name="delete">删除</string>
+
+    <!-- 课程管理 -->
+    <string name="course_management">课程管理</string>
+    <string name="add_course">添加课程</string>
+    <string name="edit_course">编辑课程</string>
+    <string name="course_name">课程名称</string>
+    <string name="credit">学分</string>
+    <string name="course_type">类型（必修 / 选修）</string>
+    <string name="empty_courses">还没有课程，点击右下角按钮添加</string>
+
+    <!-- 统计 / 排名 -->
+    <string name="statistics">统计 / 排名</string>
+    <string name="overall">总体概况</string>
+    <string name="ranking">成绩排名</string>
+    <string name="student_total">学生</string>
+    <string name="course_total">课程</string>
+    <string name="grade_total">成绩记录</string>
+    <string name="overall_average">总平均分</string>
+    <string name="filter_all">全部</string>
+</resources>
